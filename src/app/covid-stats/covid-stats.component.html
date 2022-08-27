@@ -1,0 +1,35 @@
+<h1>Covid-19 Stats</h1>
+<div class="select-country">
+  <label for="country">Country</label>
+  <ng-select [items]="(getCountries | async) ?? []"
+      bindLabel="name"
+      labelForId="country"
+      [editableSearchTerm]="true"
+      [(ngModel)]="selectedCountry"
+      [loading]="isLoading">
+  </ng-select>
+  <button type="submit" [disabled]="!selectedCountry" (click)="onSubmit()">Submit</button>
+</div>
+<div class="country-stats">
+  <div class="confirmed">
+    <h3>Confirmed</h3>
+    <p>{{2}}</p>
+  </div>
+  <div class="recovered">
+    <h3>Recovered</h3>
+    <p>{{4}}</p>
+  </div>
+  <div class="deaths">
+    <h3>Deaths</h3>
+    <p>{{3}}</p>
+  </div>
+</div>
+<!-- <div class="historical-chart">
+  <div style="display: block" [class.chartDisplay]="!loaded">
+    <canvas id="myChart" #historyChart width="100%" height="100%"></canvas>
+  </div>
+
+  <div *ngIf="!loaded" class="loading-tooltip">
+    <span>Subscribe to Display Data</span>
+  </div>
+</div> -->
