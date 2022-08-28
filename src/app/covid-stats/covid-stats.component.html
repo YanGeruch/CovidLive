@@ -1,27 +1,30 @@
-<h1>Covid-19 Stats</h1>
+<h1 class="title">Covid-19 Stats</h1>
 <div class="select-country">
-  <label for="country">Country</label>
   <ng-select [items]="(getCountries | async) ?? []"
       bindLabel="name"
       labelForId="country"
+      placeholder="Select Country"
       [editableSearchTerm]="true"
-      [(ngModel)]="selectedCountry"
-      [loading]="isLoading">
+      [(ngModel)]="selectedCountry">
   </ng-select>
-  <button type="submit" [disabled]="!selectedCountry" (click)="onSubmit()">Submit</button>
+  <button type="submit" [disabled]="!selectedCountry || isSaving" (click)="onSubmit()">Submit</button>
 </div>
-<div class="country-stats">
-  <div class="confirmed">
+<div *ngIf="showStats" class="country-stats">
+  <div class="stat confirmed">
     <h3>Confirmed</h3>
-    <p>{{2}}</p>
+    <span>{{ !isSaving ? (confirmed | number:'1.0-0'): '--' }}</span>
   </div>
-  <div class="recovered">
+  <div class="stat recovered">
     <h3>Recovered</h3>
-    <p>{{4}}</p>
+    <span>{{ !isSaving ? (recovered | number:'1.0-0'): '--' }}</span>
   </div>
-  <div class="deaths">
+  <div class="stat deaths">
     <h3>Deaths</h3>
-    <p>{{3}}</p>
+    <span>{{ !isSaving ? (deaths | number:'1.0-0'): '--' }}</span>
+  </div>
+  <div class="stat vaccinated">
+    <h3>Vaccinated</h3>
+    <span>{{ !isSaving ? ((vaccinated | number:'1.0-0') + '%'): '--' }}</span>
   </div>
 </div>
 <!-- <div class="historical-chart">

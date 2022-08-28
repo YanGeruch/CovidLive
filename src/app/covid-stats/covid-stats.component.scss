@@ -1,0 +1,69 @@
+.title {
+  text-align: center;
+  background: red;
+  background: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet);
+  background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+  background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
+  background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 3rem;
+}
+.select-country {
+  width: 80%;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+
+  ng-select {
+    width: 30%;
+    min-width: 180px;
+    margin-right: 20px;
+  }
+}
+
+.country-stats {
+  display: flex;
+  width: 80%;
+  margin: auto;
+  margin-top: 50px;
+  justify-content: space-between;
+  text-align: center;
+
+  @media only screen and (max-width: 1024px) {
+    flex-direction: column;
+    .stat {
+      margin-top: 20px;
+    }
+  }
+
+  h3 {
+    font-family: roboto condensed,sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    color: #555;
+    margin: 0;
+  }
+
+  span {
+    font-weight: 700;
+    font-size: 54px;
+  }
+
+  .confirmed {
+    color: #aaa;
+  }
+
+  .recovered {
+    color:#8ACA2B 
+  }
+
+  .deaths {
+    color: #696969;
+  }
+
+  .vaccinated {
+    color: rgb(173, 17, 178);
+  }
+}
