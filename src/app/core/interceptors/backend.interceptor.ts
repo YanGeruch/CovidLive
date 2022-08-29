@@ -24,7 +24,7 @@ export class BackendInterceptor implements HttpInterceptor {
     }
 
     if (req.url === this.cookieTokenUrl && req.method === 'GET') {
-      const token = JSON.parse(localStorage.getItem('token') ?? '{}') as LoginToken;
+      const token = JSON.parse(localStorage.getItem('token') ?? 'null') as LoginToken;
       return of(new HttpResponse({ status: 200, body: token }));
     }
 
@@ -35,7 +35,7 @@ export class BackendInterceptor implements HttpInterceptor {
       }
       return throwError(error);
     })
-    );;
+    );
     }
 
     handleAuthentication(event: HttpEvent<unknown>): void {

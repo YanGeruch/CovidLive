@@ -1,8 +1,7 @@
-import { APP_ROUTES } from './../app-routes';
 import { LoginToken } from './../models/login-token';
 import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ENVIRONMENT } from '../../../environments/environment';
 import { Router } from '@angular/router';
@@ -31,10 +30,9 @@ export class AuthInterceptor implements HttpInterceptor {
       .pipe(catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this._authService.token = null;
-          this._router.navigate([APP_ROUTES.login]);
         }
 
-        return EMPTY;
+        return throwError(error);
       })
       );
   }

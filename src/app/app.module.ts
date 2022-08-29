@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { BackendInterceptor } from './core/interceptors/backend.interceptor';
+import { GlobalErrorHandler } from './core/global-error-handler';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,10 @@ import { BackendInterceptor } from './core/interceptors/backend.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: BackendInterceptor,
       multi: true
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
     },
   ],
   bootstrap: [AppComponent]
