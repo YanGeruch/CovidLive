@@ -1,8 +1,0 @@
-{
-  "/oauth/access_token/*": {
-    "target": "github.com",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
-}
