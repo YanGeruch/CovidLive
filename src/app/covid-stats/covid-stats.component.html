@@ -1,4 +1,3 @@
-<h1 class="title">Covid-19 Stats</h1>
 <div class="select-country">
   <ng-select [items]="(getCountries | async) ?? []"
       bindLabel="name"
@@ -27,12 +26,12 @@
     <span>{{ !isSaving ? ((vaccinated | number:'1.0-0') + '%'): '--' }}</span>
   </div>
 </div>
-<!-- <div class="historical-chart">
-  <div style="display: block" [class.chartDisplay]="!loaded">
-    <canvas id="myChart" #historyChart width="100%" height="100%"></canvas>
+<div class="historical-chart">
+  <div style="display: block" [class.chartDisplay]="!showStats">
+    <canvas id="historyChart" #historyChart width="100%" height="100%"></canvas>
   </div>
 
-  <div *ngIf="!loaded" class="loading-tooltip">
-    <span>Subscribe to Display Data</span>
+  <div *ngIf="!showStats" class="loading-tooltip">
+    <span>Loading...</span>
   </div>
-</div> -->
+</div>

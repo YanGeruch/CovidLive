@@ -31,3 +31,9 @@ export interface VaccinationStatisticsResponse {
     people_partially_vaccinated: number;
   } & StatsBase;
 }
+
+export interface HistoricalStatisticsResponse {
+  All: {
+    dates: Record<string, number>;
+  } & StatsBase;
+}

@@ -1,15 +1,4 @@
-.title {
-  text-align: center;
-  background: red;
-  background: -webkit-linear-gradient(left, orange , yellow, green, cyan, blue, violet);
-  background: -o-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
-  background: -moz-linear-gradient(right, orange, yellow, green, cyan, blue, violet);
-  background: linear-gradient(to right, orange , yellow, green, cyan, blue, violet);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 3rem;
-}
+
 .select-country {
   width: 80%;
   display: flex;
@@ -66,4 +55,24 @@
   .vaccinated {
     color: rgb(173, 17, 178);
   }
+}
+
+.historical-chart {
+  border: 2px solid black;
+  border-radius: 30px;
+  height: 450px;
+  width: 450px;
+  margin-top: 10px;
+  border-bottom-right-radius: 2px;
+}
+
+.chartDisplay {
+  display: none !important;
+}
+
+.loading-tooltip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
