@@ -1,8 +1,8 @@
 import { LoginToken } from '../models/login-token';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ENVIRONMENT } from '../../../environments/environment';
 
 @Injectable()
@@ -10,8 +10,6 @@ export class BackendInterceptor implements HttpInterceptor {
   authenticationUrl = `${ENVIRONMENT.baseUrl}/api/authenticate`;
   identityUrl = `${ENVIRONMENT.identityUrl}/access_token`;
   cookieTokenUrl = `${ENVIRONMENT.baseUrl}/api/session`;
-
-  // constructor(private readonly _httpClient: HttpClient) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url === this.authenticationUrl) {
@@ -30,7 +28,14 @@ export class BackendInterceptor implements HttpInterceptor {
       return of(new HttpResponse({ status: 200, body: token }));
     }
 
-     return next.handle(req);
+     return next.handle(req)
+     .pipe(catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        localStorage.removeItem('token');
+      }
+      return throwError(error);
+    })
+    );;
     }
 
     handleAuthentication(event: HttpEvent<unknown>): void {
