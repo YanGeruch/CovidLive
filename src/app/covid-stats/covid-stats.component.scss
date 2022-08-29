@@ -58,21 +58,19 @@
 }
 
 .historical-chart {
-  border: 2px solid black;
-  border-radius: 30px;
-  height: 450px;
-  width: 450px;
+  // height: 250px;
+  // width: 400px;
+  margin: auto;
   margin-top: 10px;
-  border-bottom-right-radius: 2px;
 }
 
-.chartDisplay {
+.hidden {
   display: none !important;
 }
 
 .loading-tooltip {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

@@ -1,5 +1,5 @@
 <div class="select-country">
-  <ng-select [items]="(getCountries | async) ?? []"
+  <ng-select [items]="(countries$ | async) ?? []"
       bindLabel="name"
       labelForId="country"
       placeholder="Select Country"
@@ -26,12 +26,12 @@
     <span>{{ !isSaving ? ((vaccinated | number:'1.0-0') + '%'): '--' }}</span>
   </div>
 </div>
-<div class="historical-chart">
-  <div style="display: block" [class.chartDisplay]="!showStats">
-    <canvas id="historyChart" #historyChart width="100%" height="100%"></canvas>
+<div [class.hidden]="!showStats" class="historical-chart">
+  <div style="display: block" [class.hidden]="isSaving">
+    <canvas id="historyChart" #historyChart style="position: relative; height:40vh; width:80vw"></canvas>
   </div>
 
-  <div *ngIf="!showStats" class="loading-tooltip">
+  <div *ngIf="isSaving" class="loading-tooltip">
     <span>Loading...</span>
   </div>
 </div>

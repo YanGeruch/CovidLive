@@ -30,7 +30,7 @@ export class CovidStatsComponent implements AfterViewInit {
 
   @ViewChild('historyChart') historyChart!: ElementRef<HTMLCanvasElement>;
 
-  public getCountries = this._covidStatsService.getCountries();
+  public countries$ = this._covidStatsService.getCountries();
 
   public constructor(
     private readonly _covidStatsService: CovidStatisticsService,
@@ -41,14 +41,12 @@ export class CovidStatsComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    this.ctx = this.historyChart.nativeElement.getContext('2d') as ChartItem;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-    this.chart = new Chart(this.ctx, CHART_CONFIG) as unknown as HistoricalChart;
+    this._initChart();
   }
 
   public onSubmit(): void {
     this.isSaving = true;
+    this._chartService.clearChart(this.chart);
     this._covidStatsService.getStatistics(this.selectedCountry)
     .pipe(
       finalize(() => {
@@ -64,9 +62,14 @@ export class CovidStatsComponent implements AfterViewInit {
       this.vaccinated = vacinatedPercent;
 
       this.showStats = true;
-
-      console.log(historical);
       this._chartService.updateChartData(this.chart, historical);
     });
+  }
+
+  private _initChart(): void {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    this.ctx = this.historyChart.nativeElement.getContext('2d') as ChartItem;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    this.chart = new Chart(this.ctx, CHART_CONFIG) as unknown as HistoricalChart;
   }
 }

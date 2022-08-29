@@ -7,6 +7,9 @@ import { HistoricalChart } from '../models/historical-chart';
 })
 export class ChartService {
   public updateChartData(chart: HistoricalChart, dataPoints: DataPoint[]): void {
+    if (!chart) {
+      return;
+    }
     const labels = chart.data.labels ?? [];
     const data = chart.data.datasets[0].data;
 
@@ -19,6 +22,19 @@ export class ChartService {
       data.push(p);
       labels.push(p.x);
     });
+
+    chart.update();
+  }
+
+  public clearChart(chart: HistoricalChart): void {
+    if (!chart) {
+      return;
+    }
+    const labels = chart.data.labels ?? [];
+    const data = chart.data.datasets[0].data;
+
+    labels.length = 0;
+    data.length = 0;
 
     chart.update();
   }

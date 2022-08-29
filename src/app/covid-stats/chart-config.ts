@@ -22,13 +22,8 @@ export const CHART_CONFIG: ChartConfiguration<'line'> = {
       x: {
         type: 'time',
         time: {
-          // Luxon format string
-          tooltipFormat: 'DD T'
+          tooltipFormat: 'MM YYYY'
         },
-        // title: {
-        //   display: false,
-        //   text: 'Date'
-        // }
       },
     },
   }

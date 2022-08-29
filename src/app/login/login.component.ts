@@ -1,7 +1,9 @@
+import { APP_ROUTES } from './../core/app-routes';
 
 import { AuthService } from './../core/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ENVIRONMENT } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -14,26 +16,15 @@ export class LoginComponent implements OnInit {
     private readonly _activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    // console.log(this._activatedRoute.snapshot.params);
-    // console.log(this._activatedRoute.snapshot.paramMap);
-    // console.log(this._router.url,);
-    // console.log(this._router.getCurrentNavigation()?.extras);
     this._activatedRoute.queryParams.subscribe(x => {
       if (x.code) {
-        this._authService.login(x.code as string).subscribe();
+        this._authService.authenticate(x.code as string)
+        .subscribe(() => this._router.navigate([APP_ROUTES.statistics]));
       }
-      
     });
-    this._activatedRoute.queryParamMap.subscribe(x => console.log('map', x));
   }
 
   public login(): void {
-    // eslint-disable-next-line max-len
-    document.location.href = 'https://github.com/login/oauth/authorize?client_id=c5efff1b130aa5f84516&redirect_uri=http://localhost:4200/login';
-    // window.open('https://github.com/login/oauth/authorize?client_id=c5efff1b130aa5f84516&redirect_uri=http://localhost:4200/login',
-    // 'newwindow');
-
-    // this._authService.login().subscribe();
-    
+    document.location.href = `${ENVIRONMENT.identityUrl}/authorize?client_id=${ENVIRONMENT.clientId}`;
   }
 }

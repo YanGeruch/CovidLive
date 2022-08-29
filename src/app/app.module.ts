@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -9,6 +9,8 @@ import { CovidStatsComponent } from './covid-stats/covid-stats.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { BackendInterceptor } from './core/interceptors/backend.interceptor';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,18 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
     NgOptionHighlightModule
 
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BackendInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

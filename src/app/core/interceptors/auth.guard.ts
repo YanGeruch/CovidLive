@@ -1,3 +1,4 @@
+import { map, tap } from 'rxjs/operators';
 import { APP_ROUTES } from './../app-routes';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
@@ -11,10 +12,18 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly _authService: AuthService, private readonly _router: Router) { }
 
   canActivate(): Observable<boolean> {
-    if (!this._authService.isLoggedIn) {
+    if (this._authService.isLoggedIn) {
       return of(true);
     }
-    this._router.navigate([APP_ROUTES.login]);
-    return of(false);
+
+    return this._authService.getCookieToken()
+    .pipe(
+      map(x => !!x),
+      tap(isLoggedIn => {
+        if (!isLoggedIn) {
+          this._router.navigate([APP_ROUTES.login]);
+        }
+      })
+    );
   }
 }
