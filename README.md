@@ -1,27 +1,12 @@
-# CovidLive
+# CovidLive documentation kinda
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. 
+App has cliend_id and client_secret specified in the environment file for GitHub Oauth authentication and is ready for use.
+If values expired or to use your own GitHub account, register a new OAuth app at https://github.com/settings/developers  -> Oauth. 
+Provide your app URL and redirect URL in the settings (ex. http://localhost:4200 http://localhost:4200/login) and replace cliend_id and client_secret in the environment file with your newly generated cliend_id and client_secret.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Also to avoid CORS issues when running OAuth flow without backend activate Heroku proxy before using the app at https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token
