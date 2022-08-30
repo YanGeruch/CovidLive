@@ -17,15 +17,13 @@ export class AuthInterceptor implements HttpInterceptor {
     private readonly _authService: AuthService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (req.url === this.authenticationUrl) {
+    // if request is Authentication, save token in memory from response
+    if (req.url === this.authenticationUrl || req.url === this.cookieTokenUrl) {
       return next.handle(req)
         .pipe(tap(event => this.handleAuthentication(event)));
     }
 
-    if (req.url === this.cookieTokenUrl) {
-      return next.handle(req);
-    }
-
+    // append token in authorization header
     return next.handle(this.addTokenToHeader(req))
       .pipe(catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {

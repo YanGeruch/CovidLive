@@ -23,11 +23,10 @@ export class CovidStatisticsService {
     ])
     .pipe(
       map(([cases, vaccination, historical]) => ({
-        // default value to 0 when api fails for testing purposes
-        confirmed: cases.All?.confirmed ?? 0,
-        deaths: cases.All?.deaths ?? 0,
-        recovered: cases.All?.recovered ?? 0,
-        vacinatedPercent: 100 * vaccination.All.people_vaccinated / vaccination.All.population,
+        confirmed: cases.All?.confirmed,
+        deaths: cases.All?.deaths,
+        recovered: cases.All?.recovered,
+        vacinatedPercent: 100 * vaccination.All?.people_vaccinated / vaccination.All?.population,
         historical: Object.entries(historical.All.dates).map(([key, value]) => ({ x: moment(key, 'YYYY-MM-DD'), y: value }))
       }))
     );

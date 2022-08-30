@@ -45,6 +45,7 @@ export class CovidStatsComponent implements AfterViewInit {
   }
 
   public onSubmit(): void {
+    this.showStats = true;
     this.isSaving = true;
     this._chartService.clearChart(this.chart);
     this._covidStatsService.getStatistics(this.selectedCountry)
@@ -60,8 +61,6 @@ export class CovidStatsComponent implements AfterViewInit {
       this.deaths = deaths;
       this.recovered = recovered;
       this.vaccinated = vacinatedPercent;
-
-      this.showStats = true;
       this._chartService.updateChartData(this.chart, historical);
     });
   }

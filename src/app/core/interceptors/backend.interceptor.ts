@@ -11,6 +11,8 @@ export class BackendInterceptor implements HttpInterceptor {
   identityUrl = `${ENVIRONMENT.identityUrl}/access_token`;
   cookieTokenUrl = `${ENVIRONMENT.baseUrl}/api/session`;
 
+  // This service emulates BE functionality for sending Oauth get token request and
+  // storing retreived token in session storage
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url === this.authenticationUrl) {
       const request = req.clone({

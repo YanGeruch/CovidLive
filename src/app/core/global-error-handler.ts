@@ -19,6 +19,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     // log error here
 
+    // if 401 (Unauthorized) error code returned - navigate to login page
     if (error instanceof HttpErrorResponse && error.status === 401) {
       this._zone.run(() => this._router.navigateByUrl(APP_ROUTES.login));
     }

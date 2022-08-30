@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginToken } from '../models';
 import { ENVIRONMENT } from '../../../environments/environment';
-import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +17,7 @@ export class AuthService {
   constructor(private readonly _httpClient: HttpClient) {}
 
   public getCookieToken(): Observable<LoginToken> {
-    return this._httpClient.get<LoginToken>(`${ENVIRONMENT.baseUrl}/api/session`)
-      .pipe(tap(token => this.token = token));
+    return this._httpClient.get<LoginToken>(`${ENVIRONMENT.baseUrl}/api/session`);
   }
 
   public authenticate(code: string): Observable<string> {
