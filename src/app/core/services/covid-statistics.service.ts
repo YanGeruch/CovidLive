@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
-import { Country, CovidStatistics } from '../models';
+import { CaseStatus, Country, CovidStatistics } from '../models';
 import { map } from 'rxjs/operators';
 import { CovidStatisticsApiService } from './covid-statistics-api.service';
 import * as moment from 'moment';
@@ -19,7 +19,7 @@ export class CovidStatisticsService {
     return forkJoin([
       this._covidStatisticsApiService.getCases(country),
       this._covidStatisticsApiService.getVaccination(country),
-      this._covidStatisticsApiService.getHistory({ country, status: 'confirmed' }),
+      this._covidStatisticsApiService.getHistory({ country, status: CaseStatus.Confirmed }),
     ])
     .pipe(
       map(([cases, vaccination, historical]) => ({

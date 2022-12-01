@@ -1,13 +1,15 @@
+import { HttpErrorResponse } from '@angular/common/http';
 
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Country } from '../core/models';
-import { finalize } from 'rxjs/operators';
+import { finalize, catchError } from 'rxjs/operators';
 import { CovidStatisticsService } from '../core/services/covid-statistics.service';
 import { Chart, ChartItem, registerables } from 'chart.js';
 import { CHART_CONFIG } from './chart-config';
 import { ChartService } from '../core/services/chart.service';
 import { HistoricalChart } from '../core/models/historical-chart';
 import 'chartjs-adapter-moment';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-covid-stats',
@@ -15,10 +17,11 @@ import 'chartjs-adapter-moment';
   styleUrls: ['./covid-stats.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CovidStatsComponent implements AfterViewInit {
+export class CovidStatsComponent implements OnInit, AfterViewInit {
   public selectedCountry!: Country;
   public isSaving!: boolean;
 
+  public countries: Country[] = [];
   public confirmed!: number;
   public deaths!: number;
   public recovered!: number;
@@ -30,7 +33,7 @@ export class CovidStatsComponent implements AfterViewInit {
 
   @ViewChild('historyChart') historyChart!: ElementRef<HTMLCanvasElement>;
 
-  public countries$ = this._covidStatsService.getCountries();
+  public showServerError!: boolean;
 
   public constructor(
     private readonly _covidStatsService: CovidStatisticsService,
@@ -38,6 +41,11 @@ export class CovidStatsComponent implements AfterViewInit {
     private readonly _chartService: ChartService
     ) {
       Chart.register(...registerables);
+  }
+
+  ngOnInit(): void {
+    this._covidStatsService.getCountries()
+    .subscribe(c => this.countries = c);
   }
 
   ngAfterViewInit(): void {
@@ -50,6 +58,12 @@ export class CovidStatsComponent implements AfterViewInit {
     this._chartService.clearChart(this.chart);
     this._covidStatsService.getStatistics(this.selectedCountry)
     .pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 403) {
+          this.showServerError = true;
+        }
+        return throwError(err);
+      }),
       finalize(() => {
         this.isSaving = false;
         this._cdr.markForCheck();

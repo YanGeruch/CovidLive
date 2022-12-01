@@ -1,5 +1,5 @@
 <div class="select-country">
-  <ng-select [items]="(countries$ | async) ?? []"
+  <ng-select [items]="countries"
       bindLabel="name"
       labelForId="country"
       placeholder="Select Country"
@@ -9,6 +9,7 @@
   <button type="submit" [disabled]="!selectedCountry || isSaving" (click)="onSubmit()">Submit</button>
 </div>
 <div *ngIf="showStats" class="country-stats">
+  <h3 *ngIf="showServerError" style="color:red">Server Unavailable</h3>
   <div class="stat confirmed">
     <h3>Confirmed</h3>
     <span>{{ !isSaving ? (confirmed | number:'1.0-0'): '--' }}</span>

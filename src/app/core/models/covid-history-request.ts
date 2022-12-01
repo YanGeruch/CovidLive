@@ -1,5 +1,8 @@
 import { Country } from './country';
-export type CaseStatus = 'confirmed' | 'deaths';
+export enum CaseStatus {
+  Confirmed = 'confirmed',
+  Deaths = 'deaths'
+}
 export interface CovidHistoryRequest {
   country: Country;
   status: CaseStatus;

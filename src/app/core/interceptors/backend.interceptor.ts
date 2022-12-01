@@ -10,13 +10,14 @@ export class BackendInterceptor implements HttpInterceptor {
   authenticationUrl = `${ENVIRONMENT.baseUrl}/api/authenticate`;
   identityUrl = `${ENVIRONMENT.identityUrl}/access_token`;
   cookieTokenUrl = `${ENVIRONMENT.baseUrl}/api/session`;
+  useProxy = ENVIRONMENT.useProxy;
 
   // This service emulates BE functionality for sending Oauth get token request and
   // storing retreived token in session storage
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (req.url === this.authenticationUrl) {
       const request = req.clone({
-        url: `https://cors-anywhere.herokuapp.com/${this.identityUrl}`,
+        url: this.useProxy ? `https://cors-anywhere.herokuapp.com/${this.identityUrl}` : this.identityUrl,
         headers: req.headers.append('Accept', 'application/json'),
         params: req.params.append('client_secret', ENVIRONMENT.clientSecret)
       });
@@ -26,14 +27,15 @@ export class BackendInterceptor implements HttpInterceptor {
     }
 
     if (req.url === this.cookieTokenUrl && req.method === 'GET') {
-      const token = JSON.parse(localStorage.getItem('token') ?? 'null') as LoginToken;
+      const tokenJson = sessionStorage.getItem('access_token');
+      const token = (tokenJson ? JSON.parse(tokenJson) : null) as LoginToken;
       return of(new HttpResponse({ status: 200, body: token }));
     }
 
      return next.handle(req)
      .pipe(catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('access_token');
       }
       return throwError(error);
     })
@@ -42,7 +44,7 @@ export class BackendInterceptor implements HttpInterceptor {
 
     handleAuthentication(event: HttpEvent<unknown>): void {
       if (event instanceof HttpResponse) {
-        localStorage.setItem('token', JSON.stringify(event.body));
+        sessionStorage.setItem('access_token', JSON.stringify(event.body));
       }
     }
 }
