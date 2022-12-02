@@ -9,7 +9,8 @@ import { CHART_CONFIG } from './chart-config';
 import { ChartService } from '../core/services/chart.service';
 import { HistoricalChart } from '../core/models/historical-chart';
 import 'chartjs-adapter-moment';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-covid-stats',
@@ -61,6 +62,19 @@ export class CovidStatsComponent implements OnInit, AfterViewInit {
       catchError((err: HttpErrorResponse) => {
         if (err.status === 403) {
           this.showServerError = true;
+
+          const dummyData = {
+            confirmed: 1000,
+            recovered: 700,
+            deaths: 300,
+            vacinatedPercent: 60,
+            historical: [
+              { x: moment('2020-12-25', 'YYYY-MM-DD'), y: 29580 },
+              { x: moment('2020-11-24', 'YYYY-MM-DD'), y: 29330 },
+              { x: moment('2020-10-23', 'YYYY-MM-DD'), y: 28909 },
+          ]
+          };
+          return of(dummyData);
         }
         return throwError(err);
       }),
